@@ -34,9 +34,13 @@ app.get('/hello', (req, res) => {
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
 
-// GraphQL
+// /graphql
 const graphqlRouter = require('./routes/graphql')
 app.use('/graphql', graphqlRouter)
+
+// /apollo
+const apolloRouter = require('./routes/apollo')
+app.use('/apollo', apolloRouter)
 
 // Run server
 app.listen(PORT, () => {

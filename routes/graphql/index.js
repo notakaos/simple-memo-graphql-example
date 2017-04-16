@@ -3,8 +3,8 @@ const express = require('express')
 const router = express.Router()
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
-const knex = require(`${global.__base}/lib/knex`)
 const _ = require('lodash')
+const Memos = require(`${global.__base}/models/Memos`)
 
 const schema = buildSchema(`
   type Memo {
@@ -26,67 +26,18 @@ const schema = buildSchema(`
     updateMemo(id: Int!, title: String!, content: String!): Memo,
     deleteMemo(id: Int!): Boolean
   }
-
 `)
 
-const mapMemoFunc = function (row = {}) {
-  return {
-    id: row.id,
-    title: row.title,
-    content: row.content,
-    created_at: row.created_at ? (new Date(row.created_at)).toISOString() : null,
-    updated_at: row.updated_at ? (new Date(row.created_at)).toISOString() : null
-  }
-}
-
-const Memos = {
-  find ({limit = 3, id, orderBy = 'id', orderDir = 'asc'}) {
-    let q = knex.select('*').from('memos').limit(limit).orderBy(orderBy, orderDir)
-    if (id) {
-      q = q.where({ id })
-    }
-    return q.then(rows => {
-      return rows.map(mapMemoFunc)
-    })
-  },
-  findOneById ({ id }) {
-    return Memos.find({ id, limit: 1 }).then(res => res[0])
-  }
-}
-
 const queries = {
-  hello: () => {
-    return 'Hello, GraphQL!'
-  },
-  memos: (args) => Memos.find(args),
-  memo: (args) => Memos.findOneById({ id: args.id })
+  hello: () => 'Hello, GraphQL!',
+  memos: Memos.find,
+  memo: Memos.findOneById
 }
 
 const mutations = {
-  addMemo: (args) => {
-    return knex('memos').insert(args).returning('id').then(rows => {
-      const id = rows[0]
-      return id ? Memos.findOneById({ id }) : null
-    })
-  },
-  updateMemo: ({id, title, content}) => {
-    return knex('memos')
-      .where({ id })
-      .update({ title, content })
-      .returning('id')
-      .then(rows => {
-        const id = rows[0]
-        return id ? Memos.findOneById({ id }) : null
-      })
-  },
-  deleteMemo: ({id}) => {
-    return knex('memos')
-      .where({id})
-      .delete()
-      .then(result => {
-        return result > 0
-      })
-  }
+  addMemo: Memos.addMemo,
+  updateMemo: Memos.updateMemo,
+  deleteMemo: Memos.deleteMemo
 }
 
 const root = _.merge(queries, mutations)
