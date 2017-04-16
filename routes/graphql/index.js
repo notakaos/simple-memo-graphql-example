@@ -17,12 +17,13 @@ const schema = buildSchema(`
 
   type Query {
     hello: String,
-    memos(limit: Int): [Memo],
+    memos(limit: Int, orderBy: String, orderDir: String): [Memo],
     memo(id: Int!): Memo
   }
 
   type Mutation {
-    addMemo(title: String!, content: String!): Memo
+    addMemo(title: String!, content: String!): Memo,
+    updateMemo(id: Int!, title: String!, content: String!): Memo
   }
 
 `)
@@ -38,8 +39,8 @@ const mapMemoFunc = function (row = {}) {
 }
 
 const Memos = {
-  find({limit = 3, id}) {
-    let q = knex.select('*').from('memos').limit(limit)
+  find ({limit = 3, id, orderBy = 'id', orderDir = 'asc'}) {
+    let q = knex.select('*').from('memos').limit(limit).orderBy(orderBy, orderDir)
     if (id) {
       q = q.where({ id })
     }
@@ -47,7 +48,7 @@ const Memos = {
       return rows.map(mapMemoFunc)
     })
   },
-  findOneById({ id }) {
+  findOneById ({ id }) {
     return Memos.find({ id, limit: 1 }).then(res => res[0])
   }
 }
@@ -56,17 +57,26 @@ const queries = {
   hello: () => {
     return 'Hello, GraphQL!'
   },
-  memos: (args, request) => Memos.find(args),
+  memos: (args) => Memos.find(args),
   memo: (args) => Memos.findOneById({ id: args.id })
 }
 
 const mutations = {
-  addMemo: (args, context) => {
-    console.log(args)
+  addMemo: (args) => {
     return knex('memos').insert(args).returning('id').then(rows => {
       const id = rows[0]
       return id ? Memos.findOneById({ id }) : null
     })
+  },
+  updateMemo: ({id, title, content}) => {
+    return knex('memos')
+      .where({ id })
+      .update({ title, content })
+      .returning('id')
+      .then(rows => {
+        const id = rows[0]
+        return id ? Memos.findOneById({ id }) : null
+      })
   }
 }
 
