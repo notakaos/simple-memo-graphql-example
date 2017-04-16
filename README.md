@@ -1,10 +1,14 @@
 # Develop
 
 ```bash
-git clone <GIT_URL>
+git clone https://github.com/nobutakaoshiro/simple-memo-graphql-example
 cd simple-memo-graphql-example
 npm install
-npm start
+
+cp .env.sample .env
+vi .env
+
+npm run dev
 ```
 
 ## PostgreSQL

@@ -6,8 +6,6 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const hbs = require('express-hbs')
 
-const apiRouter = require('./routes/api')
-
 require('dotenv').config()
 
 // static files
@@ -33,8 +31,14 @@ app.get('/hello', (req, res) => {
 })
 
 // /api
+const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
 
+// GraphQL
+const graphqlRouter = require('./routes/graphql')
+app.use('/graphql', graphqlRouter)
+
+// Run server
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
 })
