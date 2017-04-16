@@ -23,7 +23,8 @@ const schema = buildSchema(`
 
   type Mutation {
     addMemo(title: String!, content: String!): Memo,
-    updateMemo(id: Int!, title: String!, content: String!): Memo
+    updateMemo(id: Int!, title: String!, content: String!): Memo,
+    deleteMemo(id: Int!): Boolean
   }
 
 `)
@@ -76,6 +77,14 @@ const mutations = {
       .then(rows => {
         const id = rows[0]
         return id ? Memos.findOneById({ id }) : null
+      })
+  },
+  deleteMemo: ({id}) => {
+    return knex('memos')
+      .where({id})
+      .delete()
+      .then(result => {
+        return result > 0
       })
   }
 }
