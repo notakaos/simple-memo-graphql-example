@@ -1,0 +1,19 @@
+version: '2'
+services:
+  postgresql:
+    container_name: postgresql-simple-memo
+    build: ./postgresql/
+    image: postgres:9.6_ja
+    ports:
+      - "35432:5432"
+    env_file: ./postgresql/postgresql.env
+    volumes:
+      - ./postgresql/data:/postgresql/data
+      - ./postgresql/log:/var/log/postgresql
+      - ./postgresql/resources:/postgresql/resources
+    networks:
+      - simple_memo_network
+
+networks:
+  simple_memo_network:
+    driver: bridge

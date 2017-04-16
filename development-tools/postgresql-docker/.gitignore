@@ -1,0 +1,4 @@
+postgresql.env
+postgresql/data
+postgresql/log
+postgresql/resources
