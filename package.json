@@ -6,7 +6,8 @@
   "scripts": {
     "test": "eslint index.js **/*.js",
     "start": "node index.js",
-    "knex": "knex"
+    "knex": "knex",
+    "hello": "echo 'Hello, World!'"
   },
   "keywords": [],
   "author": "",
