@@ -19,11 +19,6 @@ app.engine('hbs', hbs.express4({
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
-// GET /
-app.get('/', (req, res) => {
-  res.render('index', {env: process.env.NODE_ENV})
-})
-
 // GET /hello
 app.get('/hello', (req, res) => {
   const nodeEnv = process.env.NODE_ENV
@@ -41,6 +36,11 @@ app.use('/graphql', graphqlRouter)
 // /apollo
 const apolloRouter = require('./routes/apollo')
 app.use('/apollo', apolloRouter)
+
+// GET /
+app.get('/', (req, res) => {
+  res.render('index', {env: process.env.NODE_ENV})
+})
 
 // Run server
 app.listen(PORT, () => {
