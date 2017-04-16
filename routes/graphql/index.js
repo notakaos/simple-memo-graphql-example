@@ -65,8 +65,7 @@ const mutations = {
     console.log(args)
     return knex('memos').insert(args).returning('id').then(rows => {
       const id = rows[0]
-      if (!id) { return null }
-      return Memos.findOne({id})
+      return id ? Memos.findOneById({ id }) : null
     })
   }
 }
