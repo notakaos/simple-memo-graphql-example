@@ -4,14 +4,9 @@ const router = express.Router()
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
 const knex = require(`${global.__base}/lib/knex`)
+const _ = require('lodash')
 
 const schema = buildSchema(`
-  type Query {
-    hello: String,
-    memos(limit: Int): [Memo],
-    memo(id: Int!): Memo
-  }
-
   type Memo {
     id: Int,
     title: String,
@@ -19,6 +14,17 @@ const schema = buildSchema(`
     created_at: String,
     updated_at: String
   }
+
+  type Query {
+    hello: String,
+    memos(limit: Int): [Memo],
+    memo(id: Int!): Memo
+  }
+
+  type Mutation {
+    addMemo(title: String!, content: String!): Memo
+  }
+
 `)
 
 const mapMemoFunc = function (row = {}) {
@@ -31,22 +37,41 @@ const mapMemoFunc = function (row = {}) {
   }
 }
 
-const root = {
-  hello: () => {
-    return 'Hello, GraphQL!'
-  },
-  memos: (args, request) => {
-    const {limit = 3} = args
-    return knex.select('*').from('memos').limit(limit).then(rows => {
+const Memos = {
+  find({limit = 3, id}) {
+    let q = knex.select('*').from('memos').limit(limit)
+    if (id) {
+      q = q.where({ id })
+    }
+    return q.then(rows => {
       return rows.map(mapMemoFunc)
     })
   },
-  memo: ({ id }) => {
-    return knex.select('*').from('memos').where('id', id).then(rows => {
-      return rows.map(mapMemoFunc)[0]
+  findOneById({ id }) {
+    return Memos.find({ id, limit: 1 }).then(res => res[0])
+  }
+}
+
+const queries = {
+  hello: () => {
+    return 'Hello, GraphQL!'
+  },
+  memos: (args, request) => Memos.find(args),
+  memo: (args) => Memos.findOneById({ id: args.id })
+}
+
+const mutations = {
+  addMemo: (args, context) => {
+    console.log(args)
+    return knex('memos').insert(args).returning('id').then(rows => {
+      const id = rows[0]
+      if (!id) { return null }
+      return Memos.findOne({id})
     })
   }
 }
+
+const root = _.merge(queries, mutations)
 
 router.use('/', graphqlHTTP({
   schema: schema,
