@@ -6,6 +6,7 @@
   "scripts": {
     "test": "eslint index.js **/*.js",
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "knex": "knex",
     "db:migrate": "knex migrate:latest",
     "db:rollback": "knex migrate:rollback",
@@ -31,6 +32,7 @@
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "nodemon": "^1.11.0",
     "standard": "^10.0.2"
   }
 }
