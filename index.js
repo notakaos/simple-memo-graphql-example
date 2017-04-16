@@ -4,6 +4,8 @@ const port = process.env.PORT || 3000
 const path = require('path')
 const hbs = require('express-hbs')
 
+const apiRouter = require('./routes/api')
+
 require('dotenv').config()
 
 // static files
@@ -27,6 +29,9 @@ app.get('/hello', (req, res) => {
   const nodeEnv = process.env.NODE_ENV
   res.send(`Hello, World! (${nodeEnv})`)
 })
+
+// /api
+app.use('/api', apiRouter)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
