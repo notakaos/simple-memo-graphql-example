@@ -3,7 +3,7 @@ global.__base = path.join(__dirname, '/')
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 const hbs = require('express-hbs')
 
 const apiRouter = require('./routes/api')
@@ -35,6 +35,6 @@ app.get('/hello', (req, res) => {
 // /api
 app.use('/api', apiRouter)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`)
 })
