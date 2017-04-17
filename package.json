@@ -28,6 +28,7 @@
     "graphql-tools": "^0.11.0",
     "knex": "^0.12.9",
     "lodash": "^4.17.4",
+    "optics-agent": "^1.1.2",
     "pg": "^6.1.5"
   },
   "engines": {

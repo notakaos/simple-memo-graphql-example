@@ -8,6 +8,8 @@ const hbs = require('express-hbs')
 
 require('dotenv').config()
 
+// =================================================
+
 // static files
 const staticPath = path.join(__dirname, 'public')
 app.use('/static', express.static(staticPath))
@@ -18,6 +20,8 @@ app.engine('hbs', hbs.express4({
 }))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
+
+// ================================================
 
 // GET /hello
 app.get('/hello', (req, res) => {

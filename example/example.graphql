@@ -1,4 +1,3 @@
-
 query {
   memos(orderBy: "id", orderDir: "desc", limit: 100) {
     id
