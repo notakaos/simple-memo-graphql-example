@@ -5,6 +5,7 @@
     "fixtures/*",
     "dev-tools/*",
     "migrations/*",
-    "seeds/*"
+    "seeds/*",
+    "client/*"
   ]
 }
