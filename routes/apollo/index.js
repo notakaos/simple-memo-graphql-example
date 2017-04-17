@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
+const { compact, concat } = require('lodash')
 
 router.use('/graphiql', graphiqlExpress({
   endpointURL: '/apollo'
@@ -9,11 +10,11 @@ router.use('/graphiql', graphiqlExpress({
 
 const schema = require(`${global.__base}/schemas/executableSchema`)
 
+// https://github.com/apollographql/graphql-server#applicationgraphql-requests
 // GraphQL OpticsAgent
 const OpticsAgent = require('optics-agent')
 OpticsAgent.instrumentSchema(schema)
 
-// https://github.com/apollographql/graphql-server#applicationgraphql-requests
 const helperMiddleware = [
   OpticsAgent.middleware(),
   bodyParser.json(),

@@ -2,6 +2,10 @@
 
 https://floating-citadel-56493.herokuapp.com/
 
+```bash
+curl -s -XPOST -H 'Content-Type: application/json' -d '{"query": "{hello memo(id:1){id title content}}"}' https://floating-citadel-56493.herokuapp.com/graphql
+```
+
 # Develop
 
 ```bash
