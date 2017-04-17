@@ -25,9 +25,11 @@ const helperMiddleware = [
   }
 ]
 
-router.use('/', ...helperMiddleware, graphqlExpress({
+router.use('/', ...helperMiddleware, graphqlExpress(req => ({
   schema,
-  context: OpticsAgent.context
-}))
+  context: {
+    opticsContext: OpticsAgent.context(req)
+  }
+})))
 
 module.exports = router
