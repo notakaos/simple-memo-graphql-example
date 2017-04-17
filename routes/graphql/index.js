@@ -3,48 +3,28 @@ const express = require('express')
 const router = express.Router()
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
-const _ = require('lodash')
+const { merge } = require('lodash')
 const Memos = require(`${global.__base}/models/Memos`)
 
-const schema = buildSchema(`
-  type Memo {
-    id: Int,
-    title: String,
-    content: String,
-    created_at: String,
-    updated_at: String
-  }
-
-  type Query {
-    hello: String,
-    memos(limit: Int, orderBy: String, orderDir: String): [Memo],
-    memo(id: Int!): Memo
-  }
-
-  type Mutation {
-    addMemo(title: String!, content: String!): Memo,
-    updateMemo(id: Int!, title: String!, content: String!): Memo,
-    deleteMemo(id: Int!): Boolean
-  }
-`)
+const schema = buildSchema(require(`${global.__base}/schemas/rootSchema`))
 
 const queries = {
   hello: () => 'Hello, GraphQL!',
-  memos: Memos.find,
-  memo: Memos.findOneById
+  memos: (args, context) => Memos.find(args),
+  memo: (args, context) => Memos.findOneById(args)
 }
 
 const mutations = {
-  addMemo: Memos.addMemo,
-  updateMemo: Memos.updateMemo,
-  deleteMemo: Memos.deleteMemo
+  addMemo: (args, context) => Memos.addMemo(args),
+  updateMemo: (args, context) => Memos.updateMemo(args),
+  deleteMemo: (args, context) => Memos.deleteMemo(args)
 }
 
-const root = _.merge(queries, mutations)
+const rootValue = merge(queries, mutations)
 
 router.use('/', graphqlHTTP({
   schema: schema,
-  rootValue: root,
+  rootValue: rootValue,
   graphiql: true
 }))
 

@@ -1,0 +1,18 @@
+
+query {
+  memos(orderBy: "id", orderDir: "desc", limit: 100) {
+    id
+    title
+    content
+    createdAt: created_at
+    updatedAt: updated_at
+  }
+}
+
+mutation {
+  addMemo(title: "Hello, Memo!", content: "日本語テスト") {
+    id
+    title
+    content
+  }
+}

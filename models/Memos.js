@@ -30,7 +30,7 @@ const Memos = {
       return id ? Memos.findOneById({ id }) : null
     })
   },
-  updateMemo ({id, title, content}) {
+  updateMemo ({ id, title, content }) {
     return knex('memos')
       .where({ id })
       .update({ title, content })
@@ -40,9 +40,9 @@ const Memos = {
         return id ? Memos.findOneById({ id }) : null
       })
   },
-  deleteMemo ({id}) {
+  deleteMemo ({ id }) {
     return knex('memos')
-      .where({id})
+      .where({ id })
       .delete()
       .then(result => {
         return result > 0

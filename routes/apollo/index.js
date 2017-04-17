@@ -6,27 +6,8 @@ const { makeExecutableSchema } = require('graphql-tools')
 const Memos = require(`${global.__base}/models/Memos`)
 // const _ = require('lodash')
 
-const typeDefs = [`
-  type Memo {
-    id: Int,
-    title: String,
-    content: String,
-    created_at: String,
-    updated_at: String
-  }
-
-  type Query {
-    hello: String,
-    memos(limit: Int, orderBy: String, orderDir: String): [Memo],
-    memo(id: Int!): Memo
-  }
-
-  type Mutation {
-    addMemo(title: String!, content: String!): Memo,
-    updateMemo(id: Int!, title: String!, content: String!): Memo,
-    deleteMemo(id: Int!): Boolean
-  }
-`]
+const typeDef = require(`${global.__base}/schemas/rootSchema`)
+const typeDefs = [typeDef]
 
 const resolvers = {
   Query: {
@@ -35,9 +16,9 @@ const resolvers = {
     memo: (obj, args, context, info) => Memos.findOneById(args)
   },
   Mutation: {
-    addMemo: (obj, args) => Memos.addMemo(args),
-    updateMemo: (obj, args) => Memos.updateMemo(args),
-    deleteMemo: (obj, args) => Memos.deleteMemo(args)
+    addMemo: (obj, args, context, info) => Memos.addMemo(args),
+    updateMemo: (obj, args, context, info) => Memos.updateMemo(args),
+    deleteMemo: (obj, args, context, info) => Memos.deleteMemo(args)
   }
 }
 
