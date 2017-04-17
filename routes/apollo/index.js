@@ -4,6 +4,9 @@ const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
 const { compact, concat } = require('lodash')
 
+// CORS
+const cors = require('cors')
+
 router.use('/graphiql', graphiqlExpress({
   endpointURL: '/apollo'
 }))
@@ -17,6 +20,7 @@ OpticsAgent.instrumentSchema(schema)
 
 const helperMiddleware = [
   OpticsAgent.middleware(),
+  cors(),
   bodyParser.json(),
   (req, res, next) => {
     if (req.is('application/graphql')) {
