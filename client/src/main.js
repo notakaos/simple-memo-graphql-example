@@ -9,9 +9,11 @@ import VueApollo from 'vue-apollo'
 
 Vue.config.productionTip = false
 
+const { ROOT_URL } = process.env
+
 const apolloClient = new ApolloClient({
   networkInterface: createNetworkInterface({
-    uri: 'http://localhost:3000/apollo',
+    uri: `${ROOT_URL}/apollo`,
     transportBatching: true
   }),
   connectToDevTools: true
