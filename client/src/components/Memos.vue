@@ -31,7 +31,7 @@ export default {
           updated_at
         }
       }`,
-      pollInterval: 1000
+      pollInterval: 2000
     }
   }
 }
