@@ -1,30 +1,38 @@
 <template>
-  <div>
-    <h1>Memos</h1>
-    <h2>{{ hello }}</h2>
-    <ul>
-      <li v-for="memo in memos">{{ memo.id }}: {{ memo.title }}</li>
-    </ul>
+  <div class="memo-list">
+    <memo v-for="memo in memos" :key="memo.id" :memo="memo"></Memo>
   </div>
 </template>
 
 <script>
+import Memo from './Memo'
 import gql from 'graphql-tag'
 
 export default {
   name: 'Memos',
+  components: {
+    Memo
+  },
   data () {
     return {
-      memos: [
-        {id: 1, title: 'memo 1'},
-        {id: 2, title: 'memo 2'},
-        {id: 3, title: 'memo 3'}
-      ],
+      memos: [],
       hello: ''
     }
   },
   apollo: {
-    hello: gql`{hello}`
+    hello: gql`{hello}`,
+    memos: {
+      query: gql`{
+        memos(orderBy: "created_at", orderDir: "desc" limit: 100) {
+          id
+          title
+          content
+          created_at
+          updated_at
+        }
+      }`,
+      pollInterval: 1000
+    }
   }
 }
 </script>
