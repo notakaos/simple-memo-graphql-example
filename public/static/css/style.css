@@ -1,0 +1,114 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #E8E8E8;
+  color: #4E4E4E;
+  font-weight: 100;
+  line-height: 1.4;
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN","メイリオ", sans-serif;
+}
+
+.container {
+  padding: 10px;
+}
+
+.header {
+  margin-left: 10px;
+}
+
+.header h1 {
+  margin: 5px 0 10px
+}
+
+.add-button {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  padding: 5px 20px;
+}
+
+.memo-list {
+  width: 100%;
+}
+
+.memo-item {
+  display: inline-block;
+  position: relative;
+  background-color: #FEF3A1;
+  min-height: 200px;
+  width: 300px;
+  border: 1px solid rgba(200, 200, 200, 0.2);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  padding: 5px 10px;
+  margin: 10px;
+  font-size: 20px;
+}
+
+
+@media screen and (max-width: 705px) {
+  .memo-item {
+    width: calc(100% - 45px);
+  }
+}
+
+.memo-item .remove-button {
+  display: none;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.memo-item:hover {
+  box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.1);
+}
+
+.memo-item:hover .remove-button {
+  display: block;
+}
+
+.memo-item .textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  border: none;
+  background: none;
+  overflow: inherit;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+  font: inherit;
+}
+
+.memo-item .textarea:focus {
+  border: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version, currently                                  not supported by any browser */
+}
+
+.memo-item.is-color-yellow { background-color: #FEF3A1; }
+/*.memo-item.is-color-blue { background-color: #42afe3; }*/
+.memo-item.is-color-blue { background-color: #AFF4FE; }
+/*.memo-item.is-color-green { background-color: #97cd76; }*/
+.memo-item.is-color-green { background-color: #B4FDA5; }
+.memo-item.is-color-orange { background-color: #f68b39; }
+.memo-item.is-color-red { background-color: #ed8c83; }
+/*.memo-item.is-color-turquoise { background-color: #1fc8db; }*/
+.memo-item.is-color-gray { background-color: #aeb1b5; }
+.memo-item.is-color-pink { background-color: #FEC7C8; }
+.memo-item.is-color-white { background-color: #FEFEFE; }
