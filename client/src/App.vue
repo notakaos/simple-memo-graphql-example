@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
     <GlobalHeader />
+    <button class="add-button" @click="addMemo">Add</button>
     <Memos />
   </div>
 </template>
@@ -8,11 +9,37 @@
 <script>
 import GlobalHeader from './components/GlobalHeader'
 import Memos from './components/Memos'
+import gql from 'graphql-tag'
+
 export default {
   name: 'app',
   components: {
     GlobalHeader,
     Memos
+  },
+  methods: {
+    addMemo () {
+      this.$apollo.mutate({
+        mutation: gql`mutation ($title: String!, $content: String!) {
+          addMemo (title: $title, content: $content) {
+            id
+            title
+            content
+          }
+        }`,
+        variables: {
+          title: 'New Title',
+          content: 'New Content'
+        }
+      })
+      .then((data) => {
+        console.log(data)
+        console.log('added!')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+    }
   }
 }
 </script>
